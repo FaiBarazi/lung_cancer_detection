@@ -24,7 +24,8 @@ CandidateInfoTuple = namedtuple(
 def getCandidateInfoList(requireOnDisk_bool=True):
     mhd_list = glob.glob('data/src/subset*/*.mhd')
     presentOnDisk_set = {os.path.split(p)[-1][:-4] for p in mhd_list}
-    return presentOnDisk_set
+    presentOnDisk_set
+    annotations_dict = annotations_to_dict(annotations_data)
 
 
 def annotations_to_dict(csv_file: str) -> dict:
@@ -55,5 +56,4 @@ def annotations_to_dict(csv_file: str) -> dict:
     annotations_dict = df_annotations.groupby(
         'seriesuid')['coords_diam'].apply(list).to_dict()
     return annotations_dict
-
 
