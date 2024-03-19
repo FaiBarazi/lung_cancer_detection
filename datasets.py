@@ -76,7 +76,9 @@ def get_candidates(
             for annotation_tup in diameter_dict.get(series_uid, []):
                 annotationCenter_xyz, annotationDiameter_mm = annotation_tup
                 for i in range(3):
-                    delta_mm = abs(candidateCenter_xyz[i] - annotationCenter_xyz[i])
+                    delta_mm = abs(
+                        candidateCenter_xyz[i] - annotationCenter_xyz[i]
+                        )
                     if delta_mm > annotationDiameter_mm / 4:
                         break
                     else:
