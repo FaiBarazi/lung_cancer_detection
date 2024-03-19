@@ -7,6 +7,8 @@ from collections import namedtuple
 
 import pandas as pd
 from dotenv import load_dotenv
+import SimpleITK as sitk
+import numpy as np
 
 
 load_dotenv()
@@ -96,3 +98,17 @@ def get_candidates(
               candidateCenter_xyz,
             ))
     return candidateInfo_list
+
+
+class Ct:
+    def __init__(self, series_uid):
+        mhd_glob = glob.glob(f'{data_dir}/subset*/{series_uid}.mhd')[0]
+        # python simpleITK is a wrapper around a C++ lib using SWIG. The
+        # return is a swig object
+        ct_mhd = sitk.ReadImage(mhd_glob)
+        ct_array = np.array(sitk.GetArrayFromImage(ct_mhd), dtype=np.float32)
+        # bound HU values between -1000 (air) and 1000 (roughly bone density)
+        ct_array.clip(-1000, 1000, ct_array)
+
+        self.series_uid = series_uid
+        self.ct_hu_array = ct_array
