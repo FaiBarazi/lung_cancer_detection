@@ -63,7 +63,7 @@ def get_candidates(
     presentOnDisk_set: set, requireOnDisk_bool: bool, diameter_dict:  dict
 ) -> list:
     candidateInfo_list = []
-    with open('data/part2/luna/candidates.csv', "r") as f:
+    with open(candidates_data, "r") as f:
         for row in list(csv.reader(f))[1:]:
             series_uid = row[0]
             if series_uid not in presentOnDisk_set and requireOnDisk_bool:
