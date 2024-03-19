@@ -56,7 +56,11 @@ def getCandidateInfoList(requireOnDisk_bool=True):
     presentOnDisk_set = {os.path.split(p)[-1][:-4] for p in mhd_list}
     presentOnDisk_set
     diameter_dict = annotations_to_dict(annotations_data)
-    get_candidates(presentOnDisk_set, requireOnDisk_bool, diameter_dict)
+    candidateInfo_list = get_candidates(
+        presentOnDisk_set, requireOnDisk_bool, diameter_dict
+        )
+    candidateInfo_list.sort(reverse=True)
+    return candidateInfo_list
 
 
 def get_candidates(
@@ -91,5 +95,4 @@ def get_candidates(
               series_uid,
               candidateCenter_xyz,
             ))
-    candidateInfo_list.sort(reverse=True)
     return candidateInfo_list
