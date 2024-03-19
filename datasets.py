@@ -51,7 +51,7 @@ def annotations_to_dict(csv_file: str) -> dict:
 
 
 @functools.lru_cache(1)
-def getCandidateInfoList(requireOnDisk_bool=True):
+def get_candidate_innfo_list(requireOnDisk_bool=True):
     mhd_list = glob.glob('data/src/subset*/*.mhd')
     presentOnDisk_set = {os.path.split(p)[-1][:-4] for p in mhd_list}
     presentOnDisk_set
