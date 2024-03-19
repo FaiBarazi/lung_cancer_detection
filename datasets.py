@@ -91,4 +91,5 @@ def get_candidates(
               series_uid,
               candidateCenter_xyz,
             ))
+    candidateInfo_list.sort(reverse=True)
     return candidateInfo_list
