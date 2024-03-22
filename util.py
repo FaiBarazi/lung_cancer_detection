@@ -17,7 +17,6 @@ def irc_to_xyz(
     # to match xYZ order.
     cri_array = np.array(coord_irc)[::-1]
     origin_array = np.array(origin_xyz)
-    xyz_array = np.array(origin_xyz)
     voxel_size_xyz = np.array(voxel_size_xyz)
     # Scale cri by the voxel size.
     cri_scaled = cri_array * voxel_size_xyz
