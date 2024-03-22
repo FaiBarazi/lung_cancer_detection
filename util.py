@@ -24,3 +24,14 @@ def irc_to_xyz(
     # shift by the origin.
     coords_xyz = (direction_a @ cri_scaled) + origin_array
     return XyzTuple(*coords_xyz)
+
+
+def xyz_to_irc(coord_xyz, origin_xyz, vxSize_xyz, direction_a) -> XyzTuple:
+    origin_array = np.array(origin_xyz)
+    voxel_size_array = np.array(vxSize_xyz)
+    coord_array = np.array(coord_xyz)
+    cri_array = (
+        (coord_array - origin_array) @ np.linalg.inv(direction_a)
+        ) / voxel_size_array
+    cri_array = np.round(cri_array)
+    return IrcTuple(int(cri_array[2]), int(cri_array[1]), int(cri_array[0]))
