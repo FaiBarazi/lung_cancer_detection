@@ -117,3 +117,20 @@ class Ct:
         self.origin_xyz = XyzTuple(*ct_mhd.GetOrigin())
         self.voxel_size_xyz = XyzTuple(*ct_mhd.GetSpacing())
         self.direction_array = np.array(ct_mhd.GetDirection()).reshape(3, 3)
+
+    def get_raw_candidate(self, center_xyz, width_irc):
+        center_irc = xyz_to_irc(
+            center_xyz,
+            self.origin_xyz,
+            self.voxel_size_xyz,
+            self.direction_array,
+        )
+
+        slice_list = []
+        for axis, center_val in enumerate(center_irc):
+            start_index = int(round(center_val - width_irc[axis]/2))
+            end_index = int(start_index + width_irc[axis])
+            slice_list.append(slice(start_index, end_index))
+
+        ct_chunk = self.hu_a[tuple(slice_list)]
+        return ct_chunk, center_irc
