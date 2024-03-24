@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 import SimpleITK as sitk
 import numpy as np
 
+from util import irc_to_xyz, xyz_to_irc, XyzTuple
+
 
 load_dotenv()
 data_dir = Path(os.environ['DataDir'])
@@ -112,3 +114,6 @@ class Ct:
 
         self.series_uid = series_uid
         self.ct_hu_array = ct_array
+        self.origin_xyz = XyzTuple(*ct_mhd.GetOrigin())
+        self.voxel_size_xyz = XyzTuple(*ct_mhd.GetSpacing())
+        self.direction_array = np.array(ct_mhd.GetDirection()).reshape(3, 3)
