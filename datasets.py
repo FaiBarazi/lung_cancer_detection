@@ -120,11 +120,21 @@ def get_ct_raw_candidate(
 
 
 class LunaDataset:
+    def __init__(
+        self, val_stride=0, isValSet_bool=None, series_uid=None,
+    ):
+        self.candidate_info_list = copy.copy(get_candidate_info_list())
+        if series_uid:
+            self.candidate_info_list = filter(
+                lambda x: x.series_uid == series_uid, self.candidate_info_list
+                )
+            self.candidate_info_list = list(self.candidate_info_list)
+
     def __len__(self):
         return len(self.candidate_info_list)
 
     def __getitem__(self, index):
-        # candidateInfo_tup = self.candidateInfo_list[index]
+        # candidateInfo_tup = self.candidate_info_list[index]
         # width_irc = (32, 48, 48)
         # candidate_a, center_irc = get_ct_raw_candidate(
         #     candidateInfo_tup.series_uid,
@@ -138,7 +148,7 @@ class LunaDataset:
         #     not candidateInfo_tup.isNodule_bool,
         #     candidateInfo_tup.isNodule_bool
         #     ], dtype=torch.long)
-        pass
+
 
 
 class Ct:
