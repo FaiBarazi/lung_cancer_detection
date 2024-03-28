@@ -108,6 +108,15 @@ def get_ct(series_uid):
     return Ct(series_uid)
 
 
+@functools.memoize(typed=True)
+def get_ct_raw_candidate(
+    cand_series_uid, cand_center_xyz, widh_irc
+):
+    ct = get_ct(cand_series_uid)
+    ct_chunk, center_irc = ct.getRawCandidate(cand_center_xyz, widh_irc)
+    return ct_chunk, center_irc
+
+
 class LunaDataset:
     def __len__(self):
         return len(self.candidate_info_list)
@@ -115,7 +124,7 @@ class LunaDataset:
     def __getitem__(self, index):
         # candidateInfo_tup = self.candidateInfo_list[index]
         # width_irc = (32, 48, 48)
-        # candidate_a, center_irc = getCtRawCandidate(
+        # candidate_a, center_irc = get_ct_raw_candidate(
         #     candidateInfo_tup.series_uid,
         #     candidateInfo_tup.center_xyz,
         #     width_irc,
@@ -128,7 +137,6 @@ class LunaDataset:
         #     candidateInfo_tup.isNodule_bool
         #     ], dtype=torch.long)
         pass
-
 
 
 class Ct:
