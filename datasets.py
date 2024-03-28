@@ -4,6 +4,8 @@ import glob
 import csv
 from pathlib import Path
 from collections import namedtuple
+import raw_cache
+
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -108,7 +110,7 @@ def get_ct(series_uid):
     return Ct(series_uid)
 
 
-@functools.memoize(typed=True)
+@raw_cache.memoize(typed=True)
 def get_ct_raw_candidate(
     cand_series_uid, cand_center_xyz, widh_irc
 ):
