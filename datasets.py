@@ -9,6 +9,7 @@ import pandas as pd
 from dotenv import load_dotenv
 import SimpleITK as sitk
 import numpy as np
+import torch
 
 from util import irc_to_xyz, xyz_to_irc, XyzTuple
 
@@ -100,6 +101,34 @@ def get_candidates(
               candidateCenter_xyz,
             ))
     return candidateInfo_list
+
+
+@functools.lru_cache(1, typed=True)
+def get_ct(series_uid):
+    return Ct(series_uid)
+
+
+class LunaDataset:
+    def __len__(self):
+        return len(self.candidate_info_list)
+
+    def __getitem__(self, index):
+        # candidateInfo_tup = self.candidateInfo_list[index]
+        # width_irc = (32, 48, 48)
+        # candidate_a, center_irc = getCtRawCandidate(
+        #     candidateInfo_tup.series_uid,
+        #     candidateInfo_tup.center_xyz,
+        #     width_irc,
+        # )
+        # candidate_tensor = torch.from_numpy(candidate_array)
+        # candidate_tensor = candidate_tensor.to(torch.float32)
+        # candidate_tensor = candidate_tensor.unsqueeze(0)
+        # pos_t = torch.tensor([
+        #     not candidateInfo_tup.isNodule_bool,
+        #     candidateInfo_tup.isNodule_bool
+        #     ], dtype=torch.long)
+        pass
+
 
 
 class Ct:
