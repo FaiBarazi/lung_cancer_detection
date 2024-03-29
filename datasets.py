@@ -129,6 +129,13 @@ class LunaDataset:
                 lambda x: x.series_uid == series_uid, self.candidate_info_list
                 )
             self.candidate_info_list = list(self.candidate_info_list)
+        if isValSet_bool:
+            assert val_stride > 0, val_stride
+            self.candidate_info_list = self.candidate_info_list[::val_stride]
+            assert self.candidate_info_list
+        elif val_stride > 0:
+            del self.candidate_info_list[::val_stride]
+            assert self.candidate_info_list
 
     def __len__(self):
         return len(self.candidate_info_list)
