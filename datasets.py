@@ -5,13 +5,13 @@ import csv
 from pathlib import Path
 from collections import namedtuple
 import raw_cache
+import copy
 
 
 import pandas as pd
 from dotenv import load_dotenv
 import SimpleITK as sitk
 import numpy as np
-import torch
 
 from util import irc_to_xyz, xyz_to_irc, XyzTuple
 
@@ -155,7 +155,7 @@ class LunaDataset:
         #     not candidateInfo_tup.isNodule_bool,
         #     candidateInfo_tup.isNodule_bool
         #     ], dtype=torch.long)
-
+        pass
 
 
 class Ct:
