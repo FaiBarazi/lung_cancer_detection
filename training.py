@@ -53,7 +53,7 @@ class LunaTrainingApp:
         self.use_mps = torch.backends.mps.is_available()
 
         if self.use_cuda:
-            self.device = torch.device("cuda")
+            self.device = torch.device('cuda')
         elif self.use_mps:
             self.device = torch.device('mps')
         else:
@@ -61,6 +61,15 @@ class LunaTrainingApp:
 
         self.model = self.initModel()
         self.optimizer = self.initOptimizer()
+
+    def initModel(self):
+        model = LunaModel()
+        if self.use_cuda:
+            log.info(f"Using CUDA; {torch.cuda.device_count()} devices.")
+          if torch.cuda.device_count() > 1:
+            model = nn.DataParallel(model)
+        model = model.to(self.device)
+        return model
 
 
 if __name__ == '__main__':
