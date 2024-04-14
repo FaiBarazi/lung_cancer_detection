@@ -12,6 +12,7 @@ import pandas as pd
 from dotenv import load_dotenv
 import SimpleITK as sitk
 import numpy as np
+import torch
 
 from util import irc_to_xyz, xyz_to_irc, XyzTuple
 
@@ -119,7 +120,7 @@ def get_ct_raw_candidate(
     return ct_chunk, center_irc
 
 
-class LunaDataset:
+class LunaDataset(Dataset):
     def __init__(
         self, val_stride=0, isValSet_bool=None, series_uid=None,
     ):
@@ -141,21 +142,26 @@ class LunaDataset:
         return len(self.candidate_info_list)
 
     def __getitem__(self, index):
-        # candidateInfo_tup = self.candidate_info_list[index]
-        # width_irc = (32, 48, 48)
-        # candidate_a, center_irc = get_ct_raw_candidate(
-        #     candidateInfo_tup.series_uid,
-        #     candidateInfo_tup.center_xyz,
-        #     width_irc,
-        # )
-        # candidate_tensor = torch.from_numpy(candidate_array)
-        # candidate_tensor = candidate_tensor.to(torch.float32)
-        # candidate_tensor = candidate_tensor.unsqueeze(0)
-        # pos_t = torch.tensor([
-        #     not candidateInfo_tup.isNodule_bool,
-        #     candidateInfo_tup.isNodule_bool
-        #     ], dtype=torch.long)
-        pass
+        candidateInfo_tup = self.candidate_info_list[index]
+        width_irc = (32, 48, 48)
+        candidate_array, center_irc = get_ct_raw_candidate(
+            candidateInfo_tup.series_uid,
+            candidateInfo_tup.center_xyz,
+            width_irc,
+        )
+        candidate_tensor = torch.from_numpy(candidate_array)
+        candidate_tensor = candidate_tensor.to(torch.float32)
+        candidate_tensor = candidate_tensor.unsqueeze(0)
+        pos_t = torch.tensor([
+            not candidateInfo_tup.isNodule_bool,
+            candidateInfo_tup.isNodule_bool
+            ], dtype=torch.long)
+        return (
+            candidate_tensor,
+            pos_t,
+            candidateInfo_tup.series_uid,
+            torch.tensor(center_irc),
+        )
 
 
 class Ct:
