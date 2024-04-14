@@ -71,6 +71,9 @@ class LunaTrainingApp:
         model = model.to(self.device)
         return model
 
+    def initOptimizer(self):
+        return SGD(self.model.parameters(), lr=0.001, momentum=0.99)
+
 
 if __name__ == '__main__':
     LunaTrainingApp().main()
