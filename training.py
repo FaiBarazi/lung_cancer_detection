@@ -3,6 +3,8 @@ import datetime
 import argparse
 
 import torch
+from torch.optim import SGD
+from torch.utils.data import DataLoader
 
 
 class LunaTrainingApp:
@@ -73,6 +75,24 @@ class LunaTrainingApp:
 
     def initOptimizer(self):
         return SGD(self.model.parameters(), lr=0.001, momentum=0.99)
+
+    def initTrainD1(self):
+        train_ds = LunaDataset(
+                val_stride=10,
+                isValSet_bool=False,
+            )
+            batch_size = self.cli_args.batch_size
+            if self.use_cuda:
+                batch_size *= torch.cuda.device_count()
+
+            train_dl = DataLoader(
+                train_ds,
+                batch_size=batch_size,
+                num_workers=self.cli_args.num_workers,
+                pin_memory=self.use_cuda,
+            )
+
+            return train_dl
 
 
 if __name__ == '__main__':
